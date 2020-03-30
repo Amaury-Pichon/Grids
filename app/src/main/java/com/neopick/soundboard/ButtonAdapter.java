@@ -27,6 +27,10 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
     private int selectSwapCount = 0;
     private ButtonModel lastGridButtonSelected;
 
+    TextView soundButtonName ;
+    TextView gridButtonName;
+    TextView gridButtonCount;
+
     public ButtonAdapter(Context context, ArrayList<ButtonModel> gridButtons){
         super(context, 0 , gridButtons);
     }
@@ -38,30 +42,45 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
         gridButton = getItem(position);
         gridButton.setPosition(position);
 
+
+
         if(gridButton instanceof ButtonCount){
             if(null == convertView){
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_button, parent, false);
             }
+            gridButtonName = convertView.findViewById(R.id.tv_button_title);
+            gridButtonCount = convertView.findViewById(R.id.tv_button_count);
+
+            if(gridButton.getName().isEmpty()){
+                makeViewOnlyButton(gridButtonName, gridButtonCount);
+            }
+            else{
+                gridButtonName.setText(gridButton.getName());
+            }
+
+            gridButtonCount.setText(((ButtonCount)gridButton).getCount().toString());
+        }
+        else if(gridButton instanceof ButtonSound){
+            if(null == convertView){
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_sound_button, parent, false);
+            }
+            soundButtonName = convertView.findViewById(R.id.tv_sound_button_name);
+            soundButtonName.setText(gridButton.getName());
         }
 
-        final TextView gridButtonName = convertView.findViewById(R.id.tv_button_title);
-        final TextView gridButtonCount = convertView.findViewById(R.id.tv_button_count);
         CheckBox deleteCheck = convertView.findViewById(R.id.checkBox_delete);
-
-        if(gridButton.getName().isEmpty()){
-            makeViewOnlyButton(gridButtonName, gridButtonCount);
-        }
-        else{
-            gridButtonName.setText(gridButton.getName());
-        }
-
-        gridButtonCount.setText(gridButton.getCount().toString());
         bgColor = gridButton.getColor();
 
         convertView.setBackgroundColor(bgColor);
+
         if(Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor)<127 && Color.alpha(bgColor)>50){
-            gridButtonName.setTextColor(Color.parseColor("#ffffff"));
-            gridButtonCount.setTextColor(Color.parseColor("#ffffff"));
+            if(gridButton instanceof ButtonCount){
+                gridButtonName.setTextColor(Color.parseColor("#ffffff"));
+                gridButtonCount.setTextColor(Color.parseColor("#ffffff"));
+            }
+            else if(gridButton instanceof ButtonSound){
+                soundButtonName.setTextColor(Color.parseColor("#ffffff"));
+            }
         }
 
         if(!SoundBoard.deleteMode && !SoundBoard.swapMode){
@@ -81,8 +100,10 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                         v.setBackgroundColor(gridButton.getColor() + Color.LTGRAY);
                     }
                     if(event.getAction() == MotionEvent.ACTION_UP){
-                        gridButton.setCount();
-                        gridButtonCount.setText(gridButton.getCount().toString());
+                        if(gridButton instanceof ButtonCount){
+                            ((ButtonCount)gridButton).setCount();
+                            gridButtonCount.setText(((ButtonCount)gridButton).getCount().toString());
+                        }
                     }
                     if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL){
                         v.setBackgroundColor(gridButton.getColor());
@@ -120,7 +141,6 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                         gridButton.increaseSwapCount();
                         selectSwapCount--;
                     }
-
 
                     if(gridButton != lastGridButtonSelected){
                         if(null == lastGridButtonSelected){
