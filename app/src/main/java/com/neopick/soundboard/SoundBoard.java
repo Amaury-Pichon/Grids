@@ -33,7 +33,7 @@ public class SoundBoard extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode != 0) {
             String buttonName = data.getStringExtra("BUTTON_NAME");
-            gridButtons.add(new ButtonModel(buttonName, lastBgColor));
+            gridButtons.add(new ButtonCount(buttonName, lastBgColor));
             soundBoard.setAdapter(adapter);
         }
     }
@@ -50,9 +50,9 @@ public class SoundBoard extends AppCompatActivity {
         soundBoard.setAdapter(adapter);
 
         final Button addButton = findViewById(R.id.button_add);
-        addButton.setText("Add Button");
+        addButton.setText("Add");
         final Button delete = findViewById(R.id.button_delete);
-        delete.setText("Delete Button");
+        delete.setText("Delete");
         final Button swap = findViewById(R.id.button_swap);
         swap.setText("Swap");
         final Button confirmSwap = findViewById(R.id.confirm_swap);
