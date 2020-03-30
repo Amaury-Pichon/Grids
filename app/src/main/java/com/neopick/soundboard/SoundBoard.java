@@ -31,9 +31,18 @@ public class SoundBoard extends AppCompatActivity {
 
         lastBgColor = data.getIntExtra("BG_COLOR", 0);
 
-        if (requestCode == 1 && resultCode != 0) {
+        if (resultCode != RESULT_CANCELED) {
             String buttonName = data.getStringExtra("BUTTON_NAME");
-            gridButtons.add(new ButtonCount(buttonName, lastBgColor));
+
+
+            if(requestCode == 1){
+                gridButtons.add(new ButtonCount(buttonName, lastBgColor));
+            }
+            else if(requestCode == 2){
+                String soundSource = data.getStringExtra("SOUND_SOURCE");
+                gridButtons.add(new ButtonSound(buttonName, lastBgColor, soundSource));
+            }
+
             soundBoard.setAdapter(adapter);
         }
     }
@@ -50,7 +59,9 @@ public class SoundBoard extends AppCompatActivity {
         soundBoard.setAdapter(adapter);
 
         final Button addButton = findViewById(R.id.button_add);
-        addButton.setText("Add");
+        addButton.setText("Add Count");
+        final Button addButtonSound = findViewById(R.id.button_add_sound);
+        addButtonSound.setText("Add Sound");
         final Button delete = findViewById(R.id.button_delete);
         delete.setText("Delete");
         final Button swap = findViewById(R.id.button_swap);
@@ -65,6 +76,7 @@ public class SoundBoard extends AppCompatActivity {
         confirmDeletion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         gridOptions.add(addButton);
+        gridOptions.add(addButtonSound);
         gridOptions.add(delete);
         gridOptions.add(swap);
         deleteOptions.add(cancelMode);
@@ -77,7 +89,18 @@ public class SoundBoard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SoundBoard.this, ButtonSettingActivity.class);
                 intent.putExtra("LAST_BG_COLOR", lastBgColor);
+                intent.setIdentifier("CountButton");
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        addButtonSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SoundBoard.this, ButtonSettingActivity.class);
+                intent.putExtra("LAST_BG_COLOR", lastBgColor);
+                intent.setIdentifier("SoundButton");
+                startActivityForResult(intent, 2);
             }
         });
 
