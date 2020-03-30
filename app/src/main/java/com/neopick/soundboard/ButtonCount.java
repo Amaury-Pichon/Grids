@@ -2,16 +2,22 @@ package com.neopick.soundboard;
 
 public class ButtonCount extends ButtonModel {
 
-    private int layout;
+    protected Integer mCount;
+
 
     public ButtonCount(String pName, int pColor){
         super();
         mName = pName;
         mColor = pColor;
-        layout = R.layout.item_button;
+        mCount = 0;
     }
 
-    public int getLayout() {
-        return layout;
+    public void setCount() {
+        this.mCount ++;
     }
+
+    public Integer getCount() {
+        return mCount;
+    }
+
 }

@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 public class ButtonModel {
     protected String mName;
-    protected Integer mCount;
+
     protected int mColor;
     protected boolean isDeletable;
     protected int mPosition;
@@ -13,7 +13,6 @@ public class ButtonModel {
     public ButtonModel(){
         mName = "";
         mColor = Color.WHITE;
-        mCount = 0;
         isDeletable = false;
         mSwapCount = 0;
         mPosition = 0;
@@ -22,7 +21,6 @@ public class ButtonModel {
     public ButtonModel (String pName, int pColor) {
         mName = pName;
         mColor = pColor;
-        mCount = 0;
         isDeletable = false;
         mSwapCount = 0;
         mPosition = 0;
@@ -32,16 +30,10 @@ public class ButtonModel {
         return mName;
     }
 
-    public void setCount() {
-        this.mCount ++;
-    }
+
 
     public int getColor() {
         return mColor;
-    }
-
-    public Integer getCount() {
-        return mCount;
     }
 
     public boolean isDeletable() {
