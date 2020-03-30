@@ -27,9 +27,9 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
     private int selectSwapCount = 0;
     private ButtonModel lastGridButtonSelected;
 
-    TextView soundButtonName ;
-    TextView gridButtonName;
-    TextView gridButtonCount;
+    TextView soundButtonName = null ;
+    TextView gridButtonName = null;
+    TextView gridButtonCount = null;
 
     public ButtonAdapter(Context context, ArrayList<ButtonModel> gridButtons){
         super(context, 0 , gridButtons);
@@ -37,7 +37,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
 
         gridButton = getItem(position);
         gridButton.setPosition(position);
@@ -101,6 +101,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                     }
                     if(event.getAction() == MotionEvent.ACTION_UP){
                         if(gridButton instanceof ButtonCount){
+                            gridButtonCount = v.findViewById(R.id.tv_button_count);
                             ((ButtonCount)gridButton).setCount();
                             gridButtonCount.setText(((ButtonCount)gridButton).getCount().toString());
                         }
