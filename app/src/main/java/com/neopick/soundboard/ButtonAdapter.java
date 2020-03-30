@@ -38,10 +38,11 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
         gridButton = getItem(position);
         gridButton.setPosition(position);
 
-
-        if(null == convertView){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_button, parent, false);
-        };
+        if(gridButton instanceof ButtonCount){
+            if(null == convertView){
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_button, parent, false);
+            }
+        }
 
         final TextView gridButtonName = convertView.findViewById(R.id.tv_button_title);
         final TextView gridButtonCount = convertView.findViewById(R.id.tv_button_count);
