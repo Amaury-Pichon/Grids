@@ -3,12 +3,21 @@ package com.neopick.soundboard;
 import android.graphics.Color;
 
 public class ButtonModel {
-    private String mName;
-    private Integer mCount;
-    private int mColor;
-    private boolean isDeletable;
-    private int mPosition;
-    private int mSwapCount;
+    protected String mName;
+    protected Integer mCount;
+    protected int mColor;
+    protected boolean isDeletable;
+    protected int mPosition;
+    protected int mSwapCount;
+
+    public ButtonModel(){
+        mName = "";
+        mColor = Color.WHITE;
+        mCount = 0;
+        isDeletable = false;
+        mSwapCount = 0;
+        mPosition = 0;
+    }
 
     public ButtonModel (String pName, int pColor) {
         mName = pName;
