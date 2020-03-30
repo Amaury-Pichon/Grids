@@ -59,11 +59,11 @@ public class SoundBoard extends AppCompatActivity {
         soundBoard.setAdapter(adapter);
 
         final Button addButton = findViewById(R.id.button_add);
-        addButton.setText("Add Count");
+        addButton.setText("+ Count");
         final Button addButtonSound = findViewById(R.id.button_add_sound);
-        addButtonSound.setText("Add Sound");
+        addButtonSound.setText("+ Sound");
         final Button delete = findViewById(R.id.button_delete);
-        delete.setText("Delete");
+        delete.setText("-");
         final Button swap = findViewById(R.id.button_swap);
         swap.setText("Swap");
         final Button confirmSwap = findViewById(R.id.confirm_swap);
