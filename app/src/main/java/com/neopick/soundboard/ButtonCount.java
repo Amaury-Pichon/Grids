@@ -12,6 +12,13 @@ public class ButtonCount extends ButtonModel {
         mCount = 0;
     }
 
+    public ButtonCount(String pName, int pColor, int pCount){
+        super();
+        mName = pName;
+        mColor = pColor;
+        mCount = pCount;
+    }
+
     public void setCount() {
         this.mCount ++;
     }
