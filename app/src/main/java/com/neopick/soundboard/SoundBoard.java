@@ -76,6 +76,8 @@ public class SoundBoard extends AppCompatActivity {
         delete.setText("-");
         final Button swap = findViewById(R.id.button_swap);
         swap.setText("Swap");
+        final Button json = findViewById(R.id.button_json_test);
+        json.setText("JSON!");
         final Button confirmSwap = findViewById(R.id.confirm_swap);
         confirmSwap.setText("SWAP!!");
         confirmSwap.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -89,6 +91,7 @@ public class SoundBoard extends AppCompatActivity {
         gridOptions.add(addButtonSound);
         gridOptions.add(delete);
         gridOptions.add(swap);
+        gridOptions.add(json);
         deleteOptions.add(cancelMode);
         deleteOptions.add(confirmDeletion);
         swapOptions.add(cancelMode);
@@ -129,6 +132,13 @@ public class SoundBoard extends AppCompatActivity {
                 toToggle(swapOptions, gridOptions);
                 swapMode = true;
                 soundBoard.setAdapter(adapter);
+            }
+        });
+
+        json.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jsonTest();
             }
         });
 
@@ -203,6 +213,11 @@ public class SoundBoard extends AppCompatActivity {
 
     public static MediaPlayer getGridPlayer() {
         return gridPlayer;
+    }
+
+    public void jsonTest(){
+        JSONBuilder jsonBuilder = new JSONBuilder(this, gridButtons);
+        jsonBuilder.init();
     }
 }
 
