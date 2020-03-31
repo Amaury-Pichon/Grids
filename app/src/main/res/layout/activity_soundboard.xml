@@ -9,7 +9,7 @@
         android:id="@+id/grid_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="128dp"
+        android:layout_marginBottom="64dp"
         android:gravity="center"
         android:horizontalSpacing="1px"
         android:numColumns="3"
@@ -104,16 +104,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_add"
         app:layout_constraintStart_toEndOf="@+id/button_swap" />
-
-    <Button
-        android:id="@+id/button_json_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/button_add"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
