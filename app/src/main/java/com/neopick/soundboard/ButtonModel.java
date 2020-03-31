@@ -7,7 +7,7 @@ public class ButtonModel {
 
     protected int mColor;
     protected boolean isDeletable;
-    protected int mPosition;
+    protected Integer mPosition;
     protected int mSwapCount;
 
     public ButtonModel(){
@@ -44,7 +44,7 @@ public class ButtonModel {
         isDeletable = deletable;
     }
 
-    public int getPosition() {
+    public Integer getPosition() {
         return mPosition;
     }
 
