@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 public class SoundBoard extends AppCompatActivity {
+
+    private static MediaPlayer gridPlayer;
 
     GridView soundBoard;
     ArrayList<ButtonModel> gridButtons;
@@ -52,8 +55,15 @@ public class SoundBoard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soundboard);
 
+        gridPlayer = new MediaPlayer();
+
         soundBoard = findViewById(R.id.grid_button);
         gridButtons = new ArrayList<ButtonModel>();
+
+        gridButtons.add(new ButtonSound("Murloc", Color.GREEN, "http://sp.athanyl.net/sound/murloc/1.mp3"));
+        gridButtons.add(new ButtonSound("Oui", Color.CYAN, "http://sp.athanyl.net/sound/oui/1.mp3"));
+        gridButtons.add(new ButtonSound("Trap", Color.BLACK, "http://sp.athanyl.net/sound/trap/1.mp3"));
+        gridButtons.add(new ButtonSound("Turret", Color.YELLOW, "http://sp.athanyl.net/sound/rand/1.mp3"));
 
         adapter = new ButtonAdapter(this, gridButtons);
         soundBoard.setAdapter(adapter);
@@ -181,6 +191,18 @@ public class SoundBoard extends AppCompatActivity {
         for (View option : toDeactivate){
             option.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        gridPlayer.release();
+        gridPlayer = null;
+    }
+
+    public static MediaPlayer getGridPlayer() {
+        return gridPlayer;
     }
 }
 
