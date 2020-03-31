@@ -2,6 +2,7 @@ package com.neopick.soundboard;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -14,10 +15,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
@@ -26,6 +29,10 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
     private int bgColor = Color.GRAY;
     private int selectSwapCount = 0;
     private ButtonModel lastGridButtonSelected;
+
+    private MediaPlayer buttonPlayer = SoundBoard.getGridPlayer();
+    private boolean isMediaPrepared = false;
+    private String currentSoundName = "";
 
     TextView soundButtonName = null ;
     TextView gridButtonName = null;
@@ -83,6 +90,14 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
             }
         }
 
+        buttonPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                isMediaPrepared = true;
+                buttonPlayer.start();
+            }
+        });
+
         if(!SoundBoard.deleteMode && !SoundBoard.swapMode){
             deleteCheck.setVisibility(View.GONE);
             deleteCheck.setChecked(false);
@@ -104,6 +119,30 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                             gridButtonCount = v.findViewById(R.id.tv_button_count);
                             ((ButtonCount)gridButton).setCount();
                             gridButtonCount.setText(((ButtonCount)gridButton).getCount().toString());
+                        }
+                        else if(gridButton instanceof ButtonSound){
+                            if(currentSoundName != gridButton.getName()) {
+                                currentSoundName = gridButton.getName();
+
+                                try {
+                                    buttonPlayer.reset();
+                                    buttonPlayer.setDataSource(((ButtonSound) gridButton).getSource());
+                                    buttonPlayer.prepareAsync();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (IllegalArgumentException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if(isMediaPrepared && buttonPlayer.isPlaying()){
+                                buttonPlayer.seekTo(0);
+                            }
+                            else if (isMediaPrepared){
+                                buttonPlayer.start();
+                            }
+                            else{
+                                Toast.makeText(v.getContext(), gridButton.getName() + " n'est pas encore prêt", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL){
