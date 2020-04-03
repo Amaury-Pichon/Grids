@@ -1,5 +1,6 @@
 package com.neopick.soundboard;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -21,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
@@ -38,13 +40,21 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
     private TextView gridButtonName = null;
     private TextView gridButtonCount = null;
 
+    private SoundBoard soundBoardActivity;
+    private boolean deleteMode;
+    private boolean swapMode;
+
     public ButtonAdapter(Context context, ArrayList<ButtonModel> gridButtons){
         super(context, 0 , gridButtons);
+        soundBoardActivity = SoundBoardRef.mSoundBoardActivityRef.get();
     }
 
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
+
+        deleteMode = soundBoardActivity.isDeleteMode();
+        swapMode = soundBoardActivity.isSwapMode();
 
         gridButton = getItem(position);
         gridButton.setPosition(position);
@@ -98,7 +108,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
             }
         });
 
-        if(!SoundBoard.deleteMode && !SoundBoard.swapMode){
+        if(!deleteMode && !swapMode){
             deleteCheck.setVisibility(View.GONE);
             deleteCheck.setChecked(false);
             deleteCheck.setOnCheckedChangeListener(null);
@@ -152,7 +162,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                 }
             });
         }
-        else if(SoundBoard.deleteMode){
+        else if(deleteMode){
             deleteCheck.setVisibility(View.VISIBLE);
             convertView.setOnTouchListener(null);
             deleteCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -163,7 +173,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                 }
             });
         }
-        else if(SoundBoard.swapMode){
+        else if(swapMode){
 
             convertView.setOnTouchListener(null);
             convertView.setOnClickListener(new View.OnClickListener() {
@@ -186,12 +196,13 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                         if(null == lastGridButtonSelected){
                             lastGridButtonSelected = gridButton;
                         }
-                        if(selectSwapCount==2 && gridButton.getSwapCount()%2 ==1) {
-                            interPos = gridButton.getPosition();
-                            gridButton.setPosition(lastGridButtonSelected.getPosition());
-                            lastGridButtonSelected.setPosition(interPos);
+                        else {
+                            selectSwapCount = 0;
+                            lastGridButtonSelected.setSwapCount(0);
+                            gridButton.setSwapCount(0);
+                            soundBoardActivity.swap(lastGridButtonSelected.getPosition(), gridButton.getPosition());
+                            lastGridButtonSelected = null;
                         }
-                        lastGridButtonSelected = gridButton;
                     }
                 }
             });

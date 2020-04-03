@@ -23,8 +23,8 @@ public class SoundBoard extends AppCompatActivity {
     ArrayList<ButtonModel> gridButtons;
     ButtonAdapter adapter;
     int lastBgColor = Color.WHITE;
-    public static boolean deleteMode = false;
-    public static boolean swapMode = false;
+    private boolean deleteMode = false;
+    private boolean swapMode = false;
     ArrayList<View> gridOptions = new ArrayList<View>();
     ArrayList<View> deleteOptions = new ArrayList<View>();
     ArrayList<View> swapOptions = new ArrayList<View>();
@@ -57,6 +57,7 @@ public class SoundBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soundboard);
+        SoundBoardRef.updateActivity(this);
 
         file = new File(this.getExternalFilesDir(null), FileBuilder.JSON_BUTTONS);
 
@@ -91,9 +92,6 @@ public class SoundBoard extends AppCompatActivity {
         swap.setText("Swap");
         final Button json = findViewById(R.id.button_json_test);
         json.setText("JSON!");
-        final Button confirmSwap = findViewById(R.id.confirm_swap);
-        confirmSwap.setText("SWAP!!");
-        confirmSwap.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         final Button cancelMode = findViewById((R.id.button_cancel_mode));
         cancelMode.setText("Cancel");
         final Button confirmDeletion = findViewById(R.id.confirm_deletion);
@@ -108,7 +106,6 @@ public class SoundBoard extends AppCompatActivity {
         deleteOptions.add(cancelMode);
         deleteOptions.add(confirmDeletion);
         swapOptions.add(cancelMode);
-        swapOptions.add(confirmSwap);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,23 +185,6 @@ public class SoundBoard extends AppCompatActivity {
                 deleteMode = false;
             }
         });
-
-        confirmSwap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<ButtonModel> toMove = new ArrayList<ButtonModel>();
-                for(ButtonModel button : gridButtons){
-                    toMove.add(button);
-                    button.setSwapCount(0);
-                }
-                for(ButtonModel button : toMove){
-                    gridButtons.set(button.getPosition(), button);
-                }
-                soundBoard.setAdapter(adapter);
-                toToggle(gridOptions,swapOptions);
-                swapMode = false;
-            }
-        });
     }
 
     @Override
@@ -213,15 +193,6 @@ public class SoundBoard extends AppCompatActivity {
 
         gridPlayer = new MediaPlayer();
         adapter.resetCurrentSoundName();
-    }
-
-    protected void toToggle(ArrayList<View> toActivate, ArrayList<View> toDeactivate){
-        for (View option : toActivate){
-            option.setVisibility(View.VISIBLE);
-        }
-        for (View option : toDeactivate){
-            option.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -236,9 +207,34 @@ public class SoundBoard extends AppCompatActivity {
         return gridPlayer;
     }
 
+    protected void toToggle(ArrayList<View> toActivate, ArrayList<View> toDeactivate){
+        for (View option : toActivate){
+            option.setVisibility(View.VISIBLE);
+        }
+        for (View option : toDeactivate){
+            option.setVisibility(View.GONE);
+        }
+    }
+
     public void jsonTest(){
         JSONBuilder jsonBuilder = new JSONBuilder(this, gridButtons);
         jsonBuilder.init();
+    }
+
+    public void swap(int firstPos, int secondPos){
+        ButtonModel first = gridButtons.get(firstPos);
+        ButtonModel second = gridButtons.get(secondPos);
+        gridButtons.set(firstPos, second);
+        gridButtons.set(secondPos, first);
+        soundBoard.setAdapter(adapter);
+    }
+
+    public boolean isDeleteMode() {
+        return deleteMode;
+    }
+
+    public boolean isSwapMode() {
+        return swapMode;
     }
 }
 
