@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class JSONBuilder {
-    private static int TYPE_BUTTON_COUNT = 1;
-    private static int TYPE_BUTTON_SOUND = 2;
+    public static int TYPE_BUTTON_COUNT = 1;
+    public static int TYPE_BUTTON_SOUND = 2;
 
     private FileBuilder fileBuilder;
     private ArrayList<ButtonModel> mButtons;

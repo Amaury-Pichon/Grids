@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SoundBoard extends AppCompatActivity {
@@ -27,6 +28,8 @@ public class SoundBoard extends AppCompatActivity {
     ArrayList<View> gridOptions = new ArrayList<View>();
     ArrayList<View> deleteOptions = new ArrayList<View>();
     ArrayList<View> swapOptions = new ArrayList<View>();
+
+    private File file;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -55,15 +58,25 @@ public class SoundBoard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_soundboard);
 
+        file = new File(this.getExternalFilesDir(null), FileBuilder.JSON_BUTTONS);
+
         gridPlayer = new MediaPlayer();
 
         soundBoard = findViewById(R.id.grid_button);
-        gridButtons = new ArrayList<ButtonModel>();
 
-        gridButtons.add(new ButtonSound("Murloc", Color.GREEN, "http://sp.athanyl.net/sound/murloc/1.mp3"));
-        gridButtons.add(new ButtonSound("Oui", Color.CYAN, "http://sp.athanyl.net/sound/oui/1.mp3"));
-        gridButtons.add(new ButtonSound("Trap", Color.BLACK, "http://sp.athanyl.net/sound/trap/1.mp3"));
-        gridButtons.add(new ButtonSound("Turret", Color.YELLOW, "http://sp.athanyl.net/sound/rand/1.mp3"));
+
+        if(file.exists()){
+            JSONParser parser = new JSONParser(this);
+            gridButtons = parser.init();
+        }
+        else{
+            gridButtons = new ArrayList<ButtonModel>();
+        }
+
+//        gridButtons.add(new ButtonSound("Murloc", Color.GREEN, "http://sp.athanyl.net/sound/murloc/1.mp3"));
+//        gridButtons.add(new ButtonSound("Oui", Color.CYAN, "http://sp.athanyl.net/sound/oui/1.mp3"));
+//        gridButtons.add(new ButtonSound("Trap", Color.BLACK, "http://sp.athanyl.net/sound/trap/1.mp3"));
+//        gridButtons.add(new ButtonSound("Turret", Color.YELLOW, "http://sp.athanyl.net/sound/rand/1.mp3"));
 
         adapter = new ButtonAdapter(this, gridButtons);
         soundBoard.setAdapter(adapter);
@@ -192,6 +205,14 @@ public class SoundBoard extends AppCompatActivity {
                 swapMode = false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        gridPlayer = new MediaPlayer();
+        adapter.resetCurrentSoundName();
     }
 
     protected void toToggle(ArrayList<View> toActivate, ArrayList<View> toDeactivate){

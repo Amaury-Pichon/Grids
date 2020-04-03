@@ -17,7 +17,7 @@ import java.io.OutputStream;
 
 public class FileBuilder {
 
-    private static final String JSON_BUTTONS = "json-buttons.txt";
+    public static final String JSON_BUTTONS = "json-buttons.txt";
 
     private File file;
 //    private FileReader reader;
