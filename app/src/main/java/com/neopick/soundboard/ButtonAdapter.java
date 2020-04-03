@@ -34,9 +34,9 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
     private boolean isMediaPrepared = false;
     private String currentSoundName = "";
 
-    TextView soundButtonName = null ;
-    TextView gridButtonName = null;
-    TextView gridButtonCount = null;
+    private TextView soundButtonName = null ;
+    private TextView gridButtonName = null;
+    private TextView gridButtonCount = null;
 
     public ButtonAdapter(Context context, ArrayList<ButtonModel> gridButtons){
         super(context, 0 , gridButtons);
@@ -209,5 +209,9 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
         params.gravity = Gravity.CENTER;
         toStay.setLayoutParams(params);
 
+    }
+
+    public void resetCurrentSoundName(){
+        currentSoundName = null;
     }
 }
