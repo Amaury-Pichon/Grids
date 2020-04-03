@@ -111,6 +111,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
         if(!deleteMode && !swapMode){
             deleteCheck.setVisibility(View.GONE);
             deleteCheck.setChecked(false);
+            gridButton.setDeletable(false);
             deleteCheck.setOnCheckedChangeListener(null);
             convertView.setOnClickListener(null);
             selectSwapCount = 0;
@@ -170,6 +171,7 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     gridButton = getItem(position);
                     gridButton.setDeletable(isChecked);
+                    soundBoardActivity.setDeleteButton();
                 }
             });
         }
