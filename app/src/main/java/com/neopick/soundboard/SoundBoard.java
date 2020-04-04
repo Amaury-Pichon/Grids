@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class SoundBoard extends AppCompatActivity {
         final Button swap = findViewById(R.id.button_swap);
         swap.setText("Swap");
         final Button json = findViewById(R.id.button_json_test);
-        json.setText("JSON!");
+        json.setText("SAVE");
         final Button cancelMode = findViewById((R.id.button_cancel_mode));
         cancelMode.setText("Cancel");
         confirmDeletion = findViewById(R.id.confirm_deletion);
@@ -108,20 +109,31 @@ public class SoundBoard extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SoundBoard.this, ButtonSettingActivity.class);
-                intent.putExtra("LAST_BG_COLOR", lastBgColor);
-                intent.setIdentifier("CountButton");
-                startActivityForResult(intent, 1);
+                if(gridButtons.size() <= 26){
+                    Intent intent = new Intent(SoundBoard.this, ButtonSettingActivity.class);
+                    intent.putExtra("LAST_BG_COLOR", lastBgColor);
+                    intent.setIdentifier("CountButton");
+                    startActivityForResult(intent, 1);
+                }
+                else{
+                    Toast.makeText(SoundBoard.this, "Vous ne pouvez pas créer plus de boutons", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         addButtonSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SoundBoard.this, ButtonSettingActivity.class);
-                intent.putExtra("LAST_BG_COLOR", lastBgColor);
-                intent.setIdentifier("SoundButton");
-                startActivityForResult(intent, 2);
+                if(gridButtons.size() <= 26){
+                    Intent intent = new Intent(SoundBoard.this, ButtonSettingActivity.class);
+                    intent.putExtra("LAST_BG_COLOR", lastBgColor);
+                    intent.setIdentifier("SoundButton");
+                    startActivityForResult(intent, 2);
+                }
+                else{
+                    Toast.makeText(SoundBoard.this, "Vous ne pouvez pas créer plus de boutons", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
