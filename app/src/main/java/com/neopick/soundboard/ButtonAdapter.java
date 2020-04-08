@@ -181,7 +181,6 @@ public class ButtonAdapter extends ArrayAdapter<ButtonModel> {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int interPos = 0;
                     gridButton = getItem(position);
                     if(gridButton.getSwapCount()%2 == 0 && selectSwapCount <= 1){
                         v.setBackgroundColor(Color.GRAY);

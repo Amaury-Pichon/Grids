@@ -49,11 +49,12 @@ public class MainActivity extends AppCompatActivity{
         });
 
         buttonColor = findViewById(R.id.button_main_color);
-        buttonColor.setText("Test JSON");
+        buttonColor.setText("Test Recycler");
         buttonColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jsonTest();
+                Intent intent = new Intent(MainActivity.this, RecyclerActivity.class);
+                startActivity(intent);
             }
         });
         colorPicker = findViewById(R.id.main_colorPicker);
@@ -72,34 +73,34 @@ public class MainActivity extends AppCompatActivity{
         return appContext;
     }
 
-    public void jsonTest(){
-        FileBuilder fileBuilder = new FileBuilder(this);
-        fileBuilder.create();
-        String response = fileBuilder.read();
-        Log.v("LECTURE_JSON_AVANT", response);
-
-        try{
-            JSONObject messageDetails = new JSONObject(response);
-            Boolean isUserExisting = messageDetails.has("Username");
-            if(!isUserExisting){
-                int id = 323;
-                JSONArray newUserMessages = new JSONArray();
-                newUserMessages.put(id);
-                messageDetails.put("Username", newUserMessages);
-            }
-            else{
-                int id2 = 54621;
-                JSONArray userMessages = (JSONArray) messageDetails.get("Username");
-                userMessages.put(id2);
-            }
-            fileBuilder.write(messageDetails.toString());
-            response = fileBuilder.read();
-            Log.v("LECTURE_JSON_APRES", response);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-        fileBuilder.scan();
-        //fileBuilder.delete();
-
-    }
+//    public void jsonTest(){
+//        FileBuilder fileBuilder = new FileBuilder(this);
+//        fileBuilder.create();
+//        String response = fileBuilder.read();
+//        Log.v("LECTURE_JSON_AVANT", response);
+//
+//        try{
+//            JSONObject messageDetails = new JSONObject(response);
+//            Boolean isUserExisting = messageDetails.has("Username");
+//            if(!isUserExisting){
+//                int id = 323;
+//                JSONArray newUserMessages = new JSONArray();
+//                newUserMessages.put(id);
+//                messageDetails.put("Username", newUserMessages);
+//            }
+//            else{
+//                int id2 = 54621;
+//                JSONArray userMessages = (JSONArray) messageDetails.get("Username");
+//                userMessages.put(id2);
+//            }
+//            fileBuilder.write(messageDetails.toString());
+//            response = fileBuilder.read();
+//            Log.v("LECTURE_JSON_APRES", response);
+//        }catch(JSONException e){
+//            e.printStackTrace();
+//        }
+//        fileBuilder.scan();
+//        //fileBuilder.delete();
+//
+//    }
 }
