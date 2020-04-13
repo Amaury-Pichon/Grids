@@ -45,10 +45,10 @@ public class RecyclerActivity extends AppCompatActivity {
             String buttonName = data.getStringExtra("BUTTON_NAME");
 
 
-//            if(requestCode == 1){
-//                recyclerGridButtons.add(new ButtonCount(buttonName, lastBgColor));
-//            }
-//            else
+            if(requestCode == 1){
+                recyclerGridButtons.add(new ButtonCount(buttonName, lastBgColor));
+            }
+            else
                 if(requestCode == 2){
                 String soundSource = data.getStringExtra("SOUND_SOURCE");
                 recyclerGridButtons.add(new ButtonSound(buttonName, lastBgColor, soundSource));
@@ -111,15 +111,15 @@ public class RecyclerActivity extends AppCompatActivity {
         gridOptions.add(json);
         cancelOptions.add(cancelMode);
 
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    Intent intent = new Intent(RecyclerActivity.this, ButtonSettingActivity.class);
-//                    intent.putExtra("LAST_BG_COLOR", lastBgColor);
-//                    intent.setIdentifier("CountButton");
-//                    startActivityForResult(intent, 1);
-//            }
-//        });
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(RecyclerActivity.this, ButtonSettingActivity.class);
+                    intent.putExtra("LAST_BG_COLOR", lastBgColor);
+                    intent.setIdentifier("CountButton");
+                    startActivityForResult(intent, 1);
+            }
+        });
 
         addButtonSound.setOnClickListener(new View.OnClickListener() {
             @Override
