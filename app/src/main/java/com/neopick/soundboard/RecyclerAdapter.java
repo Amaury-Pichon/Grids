@@ -59,6 +59,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             if (Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor) < 127 && Color.alpha(bgColor) > 50) {
                 titleView.setTextColor(Color.parseColor("#ffffff"));
             }
+            else{
+                titleView.setTextColor(Color.BLACK);
+            }
 
 
         }
@@ -83,19 +86,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         public void setupCountButton(ButtonCount button){
             setup(button);
-            if(button.getName().isEmpty()){
-                makeViewOnlyButton(titleView, countView);
-            }
-            countView.setText(button.getCount());
+
+            countView.setText(button.getCount().toString());
 
             if (Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor) < 127 && Color.alpha(bgColor) > 50) {
                 countView.setTextColor(Color.parseColor("#ffffff"));
+            }
+            else{
+                countView.setTextColor(Color.BLACK);
+            }
+            if(button.getName().isEmpty()){
+                makeViewOnlyButton(titleView, countView);
+            }
+            else{
+                makeNormalView();
             }
         }
 
         public void setCount(ButtonCount button){
             button.setCount();
-            countView.setText(button.getCount());
+            countView.setText(button.getCount().toString());
         }
 
         private void makeViewOnlyButton(TextView toDisapear, TextView toStay){
@@ -106,6 +116,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             params.gravity = Gravity.CENTER;
             toStay.setLayoutParams(params);
 
+        }
+
+        private void makeNormalView(){
+            titleView.setVisibility(View.VISIBLE);
+            countView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) countView.getLayoutParams();
+            params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM;
+            countView.setLayoutParams(params);
         }
     }
 
