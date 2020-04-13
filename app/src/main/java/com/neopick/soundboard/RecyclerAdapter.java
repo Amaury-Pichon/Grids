@@ -2,12 +2,15 @@ package com.neopick.soundboard;
 
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
+
+    private static final int BUTTON_COUNT = 1;
+    private static final int BUTTON_SOUND = 2;
+
     private ArrayList<ButtonModel> mButtons;
     private  RecyclerActivity recyclerActivity;
     private ButtonModel button;
@@ -31,15 +38,74 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private boolean swapMode;
     private String currentSoundName = "";
 
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView titleView;
         public CheckBox deleteCheck;
         public View view;
+        public int bgColor;
+
         public MyViewHolder(View v){
             super(v);
-            titleView = v.findViewById(R.id.tv_sound_button_name);
             deleteCheck = v.findViewById(R.id.checkBox_delete);
             view = v;
+        }
+
+        public void setup(ButtonModel button){
+            titleView.setText(button.getName());
+            bgColor = button.getColor();
+            view.setBackgroundColor(bgColor);
+
+            if (Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor) < 127 && Color.alpha(bgColor) > 50) {
+                titleView.setTextColor(Color.parseColor("#ffffff"));
+            }
+
+
+        }
+    }
+
+    public static class SoundViewHolder extends RecyclerAdapter.MyViewHolder{
+
+        public SoundViewHolder(View v){
+            super(v);
+            titleView = v.findViewById(R.id.tv_sound_button_name);
+        }
+    }
+
+    public static class CountViewHolder extends RecyclerAdapter.MyViewHolder{
+        public TextView countView;
+
+        public CountViewHolder(View v){
+            super(v);
+            titleView = v.findViewById(R.id.tv_button_title);
+            countView = v.findViewById(R.id.tv_button_count);
+        }
+
+        public void setupCountButton(ButtonCount button){
+            setup(button);
+            if(button.getName().isEmpty()){
+                makeViewOnlyButton(titleView, countView);
+            }
+            countView.setText(button.getCount());
+
+            if (Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor) < 127 && Color.alpha(bgColor) > 50) {
+                countView.setTextColor(Color.parseColor("#ffffff"));
+            }
+        }
+
+        public void setCount(ButtonCount button){
+            button.setCount();
+            countView.setText(button.getCount());
+        }
+
+        private void makeViewOnlyButton(TextView toDisapear, TextView toStay){
+
+            toDisapear.setVisibility(View.GONE);
+            toStay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50.45f);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) toStay.getLayoutParams();
+            params.gravity = Gravity.CENTER;
+            toStay.setLayoutParams(params);
+
         }
     }
 
@@ -52,28 +118,44 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public RecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sound_button,parent,false);
-
-        MyViewHolder vh = new MyViewHolder(v);
+        View v;
+        MyViewHolder vh = null;
+        if (viewType == BUTTON_COUNT){
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_button,parent,false);
+            vh = new CountViewHolder(v);
+        }
+        else if (viewType == BUTTON_SOUND){
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sound_button,parent,false);
+            vh = new SoundViewHolder(v);
+        }
 
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         deleteMode = recyclerActivity.isDeleteMode();
         swapMode = recyclerActivity.isSwapMode();
 
         button = mButtons.get(position);
         button.setPosition(position);
 
-        holder.titleView.setText(button.getName());
-        int bgColor = button.getColor();
-        holder.view.setBackgroundColor(bgColor);
-
-        if (Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor) < 127 && Color.alpha(bgColor) > 50) {
-            holder.titleView.setTextColor(Color.parseColor("#ffffff"));
+        if(getItemViewType(position) == BUTTON_COUNT){
+            ((CountViewHolder) holder).setupCountButton((ButtonCount) button);
         }
+        else{
+            holder.setup(button);
+        }
+
+
+
+//        holder.titleView.setText(button.getName());
+//        int bgColor = button.getColor();
+//        holder.view.setBackgroundColor(bgColor);
+
+//        if (Color.red(bgColor) < 127 && Color.green(bgColor) < 127 && Color.blue(bgColor) < 127 && Color.alpha(bgColor) > 50) {
+//            holder.titleView.setTextColor(Color.parseColor("#ffffff"));
+//        }
 
         buttonPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -101,6 +183,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                         v.setBackgroundColor(button.getColor() + Color.LTGRAY);
                     }
                     if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if(getItemViewType(position) == BUTTON_COUNT){
+                            ((CountViewHolder) holder).setCount((ButtonCount) button);
+                        }
+                        else if(getItemViewType(position) == BUTTON_SOUND){
                             if(currentSoundName != button.getName()) {
                                 currentSoundName = button.getName();
 
@@ -123,6 +209,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                             else{
                                 Toast.makeText(v.getContext(), button.getName() + " n'est pas encore prêt", Toast.LENGTH_SHORT).show();
                             }
+                        }
                     }
                     if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                         v.setBackgroundColor(button.getColor());
@@ -172,6 +259,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 }
             });
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int result = 0;
+        if(mButtons.get(position) instanceof ButtonCount){
+            result = BUTTON_COUNT;
+        }
+        else if (mButtons.get(position) instanceof ButtonSound){
+            result = BUTTON_SOUND;
+        }
+        return result;
     }
 
     @Override
