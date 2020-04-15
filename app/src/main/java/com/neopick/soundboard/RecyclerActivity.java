@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class RecyclerActivity extends AppCompatActivity {
 
     private static MediaPlayer gridPlayer;
 
-    Button confirmDeletion;
+    ImageButton confirmDeletion;
     ArrayList<ButtonModel> recyclerGridButtons;
     int lastBgColor = Color.WHITE;
     private boolean deleteMode = false;
@@ -92,17 +93,16 @@ public class RecyclerActivity extends AppCompatActivity {
         addButton.setText("+ Count");
         final Button addButtonSound = findViewById(R.id.recycler_button_add_sound);
         addButtonSound.setText("+ Sound");
-        final Button delete = findViewById(R.id.recycler_button_delete);
-        delete.setText("-");
-        final Button swap = findViewById(R.id.recycler_button_swap);
-        swap.setText("Swap");
+        final ImageButton delete = findViewById(R.id.recycler_button_delete);
+        final ImageButton swap = findViewById(R.id.recycler_button_swap);
+//        swap.setText("Swap");
         final Button json = findViewById(R.id.recycler_button_json_test);
         json.setText("SAVE");
         final Button cancelMode = findViewById((R.id.recycler_button_cancel_mode));
         cancelMode.setText("Cancel");
         confirmDeletion = findViewById(R.id.recycler_confirm_deletion);
-        confirmDeletion.setText("DELETE");
-        confirmDeletion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+//        confirmDeletion.setText("DELETE");
+//        confirmDeletion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         gridOptions.add(addButton);
         gridOptions.add(addButtonSound);
