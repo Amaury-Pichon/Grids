@@ -74,7 +74,7 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         if(file.exists()){
-            JSONParser parser = new JSONParser(this);
+            JSONParser parser = new JSONParser(this, FileBuilder.RECYCLER_BUTTONS);
             recyclerGridButtons = parser.init();
         }
         else{

@@ -14,6 +14,11 @@ public class JSONParser {
     private FileBuilder fileBuilder;
     private ArrayList<ButtonModel> mButtons;
 
+    public JSONParser(Context ctx, String fileName){
+        fileBuilder = new FileBuilder(ctx, fileName);
+        mButtons = new ArrayList<ButtonModel>();
+    }
+
     public JSONParser(Context ctx){
         fileBuilder = new FileBuilder(ctx);
         mButtons = new ArrayList<ButtonModel>();
