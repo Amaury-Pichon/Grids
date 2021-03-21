@@ -65,7 +65,7 @@ public class RecyclerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recycler_activity);
         RecyclerRef.updateActivity(this);
 
-        file = new File(this.getExternalFilesDir(null), FileBuilder.RECYCLER_BUTTONS);
+        file = new File(this.getExternalFilesDir(null), FileBuilder.NEW_BUTTONS);
 
 
         gridPlayer = new MediaPlayer();
@@ -75,7 +75,7 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         if(file.exists()){
-            JSONParser parser = new JSONParser(this, FileBuilder.RECYCLER_BUTTONS);
+            JSONParser parser = new JSONParser(this, FileBuilder.NEW_BUTTONS);
             recyclerGridButtons = parser.init();
         }
         else{
@@ -90,16 +90,16 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         final Button addButton = findViewById(R.id.recycler_button_add);
-        addButton.setText("+ Count");
+        addButton.setText("+ ");
         final Button addButtonSound = findViewById(R.id.recycler_button_add_sound);
-        addButtonSound.setText("+ Sound");
+        addButtonSound.setText("+ ");
         final ImageButton delete = findViewById(R.id.recycler_button_delete);
         final ImageButton swap = findViewById(R.id.recycler_button_swap);
 //        swap.setText("Swap");
-        final Button json = findViewById(R.id.recycler_button_json_test);
-        json.setText("SAVE");
-        final Button cancelMode = findViewById((R.id.recycler_button_cancel_mode));
-        cancelMode.setText("Cancel");
+        final ImageButton json = findViewById(R.id.recycler_button_json_test);
+//        json.setText("SAVE");
+        final ImageButton cancelMode = findViewById((R.id.recycler_button_cancel_mode));
+//        cancelMode.setText("Cancel");
         confirmDeletion = findViewById(R.id.recycler_confirm_deletion);
 //        confirmDeletion.setText("DELETE");
 //        confirmDeletion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -223,7 +223,7 @@ public class RecyclerActivity extends AppCompatActivity {
     }
 
     public void jsonTest(){
-        JSONBuilder jsonBuilder = new JSONBuilder(this, FileBuilder.RECYCLER_BUTTONS, recyclerGridButtons);
+        JSONBuilder jsonBuilder = new JSONBuilder(this, FileBuilder.NEW_BUTTONS, recyclerGridButtons);
         jsonBuilder.init();
     }
 

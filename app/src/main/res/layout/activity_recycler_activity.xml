@@ -27,6 +27,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:drawableRight="@drawable/ic_numbers"
         android:text="Button"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,13 +46,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/recycler_button_cancel_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_cancel"
         android:text="Button"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -90,19 +92,21 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:drawableRight="@drawable/ic_sound"
         android:text="Button"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/recycler_button_add"
         app:layout_constraintStart_toEndOf="@+id/recycler_button_swap" />
 
-    <Button
+    <ImageButton
         android:id="@+id/recycler_button_json_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_save"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/recycler_button_add"
         app:layout_constraintEnd_toEndOf="parent" />

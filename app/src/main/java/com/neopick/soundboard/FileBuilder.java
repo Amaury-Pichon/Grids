@@ -19,6 +19,7 @@ public class FileBuilder {
 
     public static final String JSON_BUTTONS = "json-buttons.txt";
     public static final String RECYCLER_BUTTONS = "recycler-buttons.txt";
+    public static final String NEW_BUTTONS = "new-buttons.txt";
 
 
     private File file;
